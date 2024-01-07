@@ -1,7 +1,7 @@
 import express, { response } from 'express'
 
 const app = express()
-
+app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
 const mockUserData = [
@@ -18,13 +18,11 @@ app.get("/api/users",(req,res)=>{
   const {
     query: {filter,value},
   } = req;
-  if(!filter && !value)
-  return req.send(mockUserData);
 if(filter && value)
   return res.send(
     mockUserData.filter((user)=> user[filter].includes(value))
   );
-  // res.send(mockUserData);
+  return res.send(mockUserData);
 });
 
 //route parameter
@@ -39,6 +37,15 @@ app.get("/api/users/:id",(req,res)=>{
     return res.status(404).send({msg : 'User not found'})
   }
   return res.send(findUser);
+})
+
+// Post request
+app.post("/api/users", (req,res)=>{
+  console.log(req.body);
+  const {body} = req;
+  const newUser = {id : mockUserData[mockUserData.length - 1].id+1, ...body};
+  mockUserData.push(newUser)
+  return res.status(201).send(mockUserData);
 })
 
 app.get("/api/products",(req,res)=>{
