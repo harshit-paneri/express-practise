@@ -15,17 +15,30 @@ app.get("/", (req, res) => {
 })
 
 app.get("/api/users",(req,res)=>{
-  res.send(mockUserData);
+  const {
+    query: {filter,value},
+  } = req;
+  if(!filter && !value)
+  return req.send(mockUserData);
+if(filter && value)
+  return res.send(
+    mockUserData.filter((user)=> user[filter].includes(value))
+  );
+  // res.send(mockUserData);
 });
 
 //route parameter
 app.get("/api/users/:id",(req,res)=>{
   console.log(req.params);
-  const ParseID = parseInt(req.params.id);
-  console.log(ParseID);
-  if(isNaN(ParseID)) return response.status(400).send({msg : "bad Request. Invalid ID"});
-  const findUser = mockUserData.find((user)=>user.id===ParseID);
-  if(!findUser) return response.status(404).send({msg : "User not found"});
+  const parseID = parseInt(req.params.id);
+  if(isNaN(parseID)) {
+    return response.status(400).send({msg : "bad Request. Invalid ID"})
+  } 
+  const findUser = mockUserData.find(user=>user.id===parseID);
+  if(!findUser)  { 
+    return res.status(404).send({msg : 'User not found'})
+  }
+  return res.send(findUser);
 })
 
 app.get("/api/products",(req,res)=>{
