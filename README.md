@@ -1,4 +1,4 @@
-Express JS pracise
+# Express JS Practice
 
 ## Get Request :
 ``` 
