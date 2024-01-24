@@ -2,7 +2,8 @@
 
 ## Get Request :
 ``` 
-app.get("/",  (req, res) => {  res.status(202).send("Hello bro!!!");
+app.get("/",  (req, res) => {
+  res.status(202).send("Hello bro!!!");
 })
 ```
 
